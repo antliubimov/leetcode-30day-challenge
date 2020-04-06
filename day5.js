@@ -49,7 +49,6 @@ var maxProfit = function (prices) {
     sell = prices[i + 1];
     profit += sell - buy;
   }
-
   return profit;
 };
 
