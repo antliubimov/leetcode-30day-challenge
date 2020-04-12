@@ -32,36 +32,44 @@ Simulate the process. We can do it with a heap, or by sorting some list of stone
  */
 
 var lastStoneWeight = function (stones) {
+  // while (stones.length >= 2) {
+  //   let [x, y] = (stones[0] <= stones[1]) ? [0, 1] : [1, 0];
+  //   for (let i = 2, length = stones.length; i < length; i++) {
+  //     if (stones[x] < stones[i]) {
+  //       if (stones[y] < stones[i]) {
+  //         x = y;
+  //         y = i;
+  //       } else {
+  //         x = i;
+  //       }
+  //     }
+  //   }
+  //   if (stones[x] === stones[y]) {
+  //     if (x < y) {
+  //       stones.splice(y, 1);
+  //       stones.splice(x, 1);
+  //     } else {
+  //       stones.splice(x, 1);
+  //       stones.splice(y, 1);
+  //     }
+  //   } else {
+  //     stones[y] -= stones[x];
+  //     stones.splice(x, 1);
+  //   }
+  // }
+  // if (stones.length === 0) return 0;
+  // if (stones.length === 1) return stones[0];
 
-  // let x;
-  // let y;
-  while (stones.length >= 2) {
-    let [x, y] = (stones[0] <= stones[1]) ? [0, 1] : [1, 0];
-    for (let i = 2, length = stones.length; i < length; i++) {
-      if (stones[x] < stones[i]) {
-        if (stones[y] < stones[i]) {
-          x = y;
-          y = i;
-        } else {
-          x = i;
-        }
-      }
-    }
-    if (stones[x] === stones[y]) {
-      if (x < y) {
-        stones.splice(y, 1);
-        stones.splice(x, 1);
-      } else {
-        stones.splice(x, 1);
-        stones.splice(y, 1);
-      }
-    } else {
-      stones[y] -= stones[x];
-      stones.splice(x, 1);
+  while (stones.length > 1) {
+    let y = Math.max(...stones);
+    stones.splice(stones.indexOf(y), 1);
+    let x = Math.max(...stones);
+    stones.splice(stones.indexOf(x), 1);
+    if (x !== y) {
+      stones.push(y - x);
     }
   }
-  if (stones.length === 0) return 0;
-  if (stones.length === 1) return stones[0];
+  return Number(stones);
 };
 
-console.log(lastStoneWeight([2, 7, 4, 1, 8, 1]));
+console.log(lastStoneWeight([2, 7, 4, 1, 8, 1, 1]));
