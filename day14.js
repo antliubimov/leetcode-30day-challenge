@@ -49,9 +49,44 @@ You may notice that left shift cancels the right shift, so count the total left 
  * @return {string}
  */
 
- var stringShift = function(s, shift) {
-  let shiftSum = (shift) => {
-    let sh = new Map();
+var stringShift = function (s, shift) {
+   let shiftSum = [0, 0];
+   let length = shift.length;
+   for (let i = 0; i < length; i++) {
+      if (shift[i][0] === 1) {
+         shiftSum[1] -= shift[i][1];
+      } else {
+         shiftSum[1] += shift[i][1];
+      }
+   }
+   if (Math.abs(shiftSum[1]) > length) {
+      shiftSum[1] = shiftSum[1] % length;
+   }
 
-  }
+   let end = s.slice(shiftSum[1]);
+   return end + s.replace(end, '');
 };
+
+// console.log(stringShift("abc", [
+//    [0, 1],
+//    [1, 2]
+// ]));
+// console.log(stringShift("abcdefg", [
+//    [1, 1],
+//    [1, 1],
+//    [0, 2],
+//    [1, 3]
+// ]));
+
+console.log(stringShift("xqgwkiqpif", [
+   [1, 4],
+   [0, 7],
+   [0, 8],
+   [0, 7],
+   [0, 6],
+   [1, 3],
+   [0, 1],
+   [1, 7],
+   [0, 5],
+   [0, 6]
+])); // "qpifxqgwki"
