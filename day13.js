@@ -21,15 +21,35 @@ Note: The length of the given binary array will not exceed 50,000.
  * @return {number}
  */
 var findMaxLength = function (nums) {
-  let max = 0;
-  const regExp = /0{1,}1{1,}/g;
-  const regExp2 = /1{1,}0{1,}/g;
+  // let maxlen = 0;
+    //     for (let i = 0; i < nums.length; i++) {
+    //         let zeroes = 0;
+    //         let ones = 0;
+    //         for (let end = i; end < nums.length; end++) {
+    //             if (nums[end] == 0) {
+    //                 zeroes++;
+    //             } else {
+    //                 ones++;
+    //             }
+    //             if (zeroes == ones) {
+    //                 maxlen = Math.max(maxlen, end - i + 1);
+    //             }
+    //         }
+    //     }
+    //     return maxlen;
 
-  let arr = Array.from(nums.join('').matchAll(regExp));
-  return arr;
-
-
-
+    let map = new Map();
+    map.set(0, -1);
+    let maxlen = 0, count = 0;
+    for (let i = 0; i < nums.length; i++) {
+      count = count + (nums[i] == 1 ? 1 : -1);
+      if (map.has(count)) {
+        maxlen = Math.max(maxlen, i - map.get(count));
+      } else {
+        map.set(count, i);
+      }
+    }
+    return maxlen;
 };
 
 console.log(findMaxLength([0, 1]));
