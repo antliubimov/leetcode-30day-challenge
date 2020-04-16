@@ -20,7 +20,21 @@ Could you solve it with constant space complexity? (The output array does not co
  */
 
 var productExceptSelf = function (nums) {
+  let result = [];
+  result[0] = 1;
+  let length = nums.length;
+  for (let i = 1; i < length; i++) {
+    result[i] = nums[i - 1] * result[i - 1];
+  }
 
+  let right = 1;
+  for (let i = length - 1; i >= 0; i--) {
+    result[i] *= right;
+    right *= nums[i];
+  }
+
+
+  return result;
 };
 
-console.log(productExceptSelf([1, 2, 3, 4]));
+console.log(productExceptSelf([1, 2, 3, 4])); //[24,12,8,6]
