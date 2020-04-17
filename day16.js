@@ -31,5 +31,17 @@ The string size will be in the range [1, 100].
  */
 
 var checkValidString = function (s) {
+  let minLeft = 0;
+  let maxLeft = 0;
 
+  for (let i = 0, length = s.length; i < length; i++) {
+    minLeft += (s[i] === '(') ? 1 : -1;
+    maxLeft += (s[i] !== ')') ? 1 : -1;
+    if (maxLeft < 0) return false;
+    minLeft = Math.max(0, minLeft);
+  }
+
+  return minLeft == 0;
 };
+
+console.log(checkValidString("(**)))"));
