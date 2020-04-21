@@ -15,20 +15,60 @@ Note:
 The values of preorder are distinct.
 */
 
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
 
+ // Definition for a binary tree node.
+function TreeNode(val) {
+  this.val = val;
+  this.left = this.right = null;
+};
+
+/*
  * @param {number[]} preorder
  * @return {TreeNode}
  */
 
 var bstFromPreorder = function (preorder) {
-  let tree = [];
+  // let i = 0;
+  // const process = (bound) => {
+  //   if (i === preorder.length || preorder[i] > bound) {
+  //     return null;
+  //   }
 
+
+  //   const num = preorder[i];
+  //   const node = new TreeNode(num);
+  //   i++;
+
+  //   node.left = process(node.val);
+  //   node.right = process(bound);
+  //   return node;
+  // };
+
+  // const root = process(Number.MAX_SAFE_INTEGER);
+
+  // return root;
+
+  if (preorder.length === 1) {
+    return new TreeNode(preorder[0]);
+  }
+
+  let root = new TreeNode(preorder[0]);
+  return helper(root, preorder);
 };
+
+var helper = (node, preorder) => {
+  const leftArr = preorder.filter(el => node.val > el);
+  const rightArr = preorder.filter(el => node.val < el);
+
+  if (leftArr.length > 0) {
+    node.left = helper(new TreeNode(leftArr[0]), leftArr);
+  };
+
+  if (rightArr.length > 0) {
+    node.right = helper(new TreeNode(rightArr[0]), rightArr);
+  };
+
+  return node;
+};
+
+console.log(bstFromPreorder([8,5,1,7,10,12])); // [8,5,10,1,7,null,12]
