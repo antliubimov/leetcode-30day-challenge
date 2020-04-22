@@ -1,6 +1,9 @@
 'use strict';
 /*
+<<<<<<< HEAD
 
+=======
+>>>>>>> ed46ebbffb221fbeff0a56d04e94a28a2a36092b
 Leftmost Column with at Least a One
 (This problem is an interactive problem.)
 
@@ -11,12 +14,19 @@ Given a row-sorted binary matrix binaryMatrix, return leftmost column index(0-in
 You can't access the Binary Matrix directly.  You may only access the matrix using a BinaryMatrix interface:
 
 BinaryMatrix.get(x, y) returns the element of the matrix at index (x, y) (0-indexed).
+<<<<<<< HEAD
 BinaryMatrix.dimensions() returns a list of 2 elements [n, m], which means the matrix is n * m.
+=======
+BinaryMatrix.dimensions() returns a list of 2 elements [m, n], which means the matrix is m * n.
+>>>>>>> ed46ebbffb221fbeff0a56d04e94a28a2a36092b
 Submissions making more than 1000 calls to BinaryMatrix.get will be judged Wrong Answer.  Also, any solutions that attempt to circumvent the judge will result in disqualification.
 
 For custom testing purposes you're given the binary matrix mat as input in the following four examples. You will not have access the binary matrix directly.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ed46ebbffb221fbeff0a56d04e94a28a2a36092b
 Example 1:
 Input: mat = [[0,0],[1,1]]
 Output: 0
@@ -33,11 +43,23 @@ Example 4:
 Input: mat = [[0,0,0,1],[0,0,1,1],[0,1,1,1]]
 Output: 1
 
+<<<<<<< HEAD
 Constraints:
 
 1 <= mat.length, mat[i].length <= 100
 mat[i][j] is either 0 or 1.
 mat[i] is sorted in a non-decreasing way.
+=======
+
+Constraints:
+
+m == mat.length
+n == mat[i].length
+1 <= m, n <= 100
+mat[i][j] is either 0 or 1.
+mat[i] is sorted in a non-decreasing way.
+
+>>>>>>> ed46ebbffb221fbeff0a56d04e94a28a2a36092b
    Hide Hint #1
 1. (Binary Search) For each row do a binary search to find the leftmost one on that row and update the answer.
    Hide Hint #2
@@ -66,23 +88,22 @@ mat[i] is sorted in a non-decreasing way.
  * @return {number}
  */
 var leftMostColumnWithOne = function (binaryMatrix) {
-  let [m, n] = binaryMatrix.dimensions();
+  let [rows, cols] = binaryMatrix.dimensions();
 
-  for (let x = 0; x < m; x++) {
-    for (let y = n - 1; y >= 0; y--) {
-      let curr = binaryMatrix.get(x, y)
-      if (curr === 1) {
-        if (x !== m - 1) {
-          break;
-        } else if (x == m - 1 && binaryMatrix.get(x, y - 1) === 1) {
-          return x - 1;
-        } else {
-          return x;
-        }
-      } else {
-        continue;
-      }
+  if (rows == 0 && cols == 0) return -1;
+  let result = -1;
+
+  let r = 0;
+  let c = cols - 1;
+
+  while (r < rows && c >= 0) {
+    if (binaryMatrix.get(r, c) == 1) {
+      result = c;
+      c--;
+    } else {
+      r++;
     }
   }
-  return -1;
+
+  return result;
 };
