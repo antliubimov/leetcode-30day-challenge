@@ -19,5 +19,10 @@ Output: 0
  */
 
 var rangeBitwiseAnd = function (m, n) {
-
+  while (m < n) {
+    n -= (n & -n);
+  }
+  return n;
 };
+
+console.log(rangeBitwiseAnd(5, 7));
