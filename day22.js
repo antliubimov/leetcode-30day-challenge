@@ -28,5 +28,37 @@ sum(i,j)=sum(0,j)-sum(0,i), where sum(i,j) represents the sum of all the element
  */
 
 var subarraySum = function (nums, k) {
+   let length = nums.length;
+   if (length === 0) return 0;
 
+   let count = 0;
+   let map = new Map();
+   let i = 0;
+   let curSum = 0;
+
+   while (i < length) {
+      curSum += nums[i];
+
+      if (curSum === k) {
+         count += 1;
+      }
+
+      if (map.has(curSum - k)) {
+         count += map.get(curSum - k);
+      }
+
+      if (map.has(curSum)) {
+         map.set(curSum, map.get(curSum) + 1);
+      } else {
+         map.set(curSum, 1);
+      }
+
+      i++;
+   }
+
+   return count;
 };
+
+console.log(subarraySum([3, 4, 7, 2, -3, 1, 4, 2], 7)); // 4
+console.log(subarraySum([1, 1, 1], 2)); // 2
+console.log(subarraySum([1], 0));
