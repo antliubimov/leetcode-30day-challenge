@@ -1,77 +1,64 @@
-'use strict'
+'use strict';
 /*
-Maximal Square
-Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+Longest Common Subsequence
+Solution
+Given two strings text1 and text2, return the length of their longest common subsequence.
 
-Example:
+A subsequence of a string is a new string generated from the original string with some characters(can be none) deleted without changing the relative order of the remaining characters. (eg, "ace" is a subsequence of "abcde" while "aec" is not). A common subsequence of two strings is a subsequence that is common to both strings.
 
-Input:
+If there is no common subsequence, return 0.
 
-1 0 1 0 0
-1 0 1 1 1
-1 1 1 1 1
-1 0 0 1 0
 
-Output: 4
+Example 1:
+Input: text1 = "abcde", text2 = "ace"
+Output: 3
+Explanation: The longest common subsequence is "ace" and its length is 3.
+
+Example 2:
+Input: text1 = "abc", text2 = "abc"
+Output: 3
+Explanation: The longest common subsequence is "abc" and its length is 3.
+
+Example 3:
+Input: text1 = "abc", text2 = "def"
+Output: 0
+Explanation: There is no such common subsequence, so the result is 0.
+
+Constraints:
+
+1 <= text1.length <= 1000
+1 <= text2.length <= 1000
+The input strings consist of lowercase English characters only.
+   Hide Hint #1
+Try dynamic programming. DP[i][j] represents the longest common subsequence of text1[0 ... i] & text2[0 ... j].
+   Hide Hint #2
+DP[i][j] = DP[i - 1][j - 1] + 1 , if text1[i] == text2[j] DP[i][j] = max(DP[i - 1][j], DP[i][j - 1]) , otherwise
 */
 
 /**
- * @param {character[][]} matrix
+ * @param {string} text1
+ * @param {string} text2
  * @return {number}
  */
+var longestCommonSubsequence = function (text1, text2) {
+  const dp = [];
+  let m = text1.length;
+  let n = text2.length;
 
-var maximalSquare = function (matrix) {
-  let max = 0;
-  let rows = matrix.length;
-  if (rows === 0) return 0;
-  if (rows === 1) {
-    return matrix[0].includes('1') ? 1 : 0;
-  }
-  let cols = matrix[0].length;
-  let subMatrix = [];
-  for (let i = 0; i < rows; i++) {
-    subMatrix.push(new Array(cols).fill(0));
-
+  for (let i = 0; i <= m; i++) {
+    dp[i] = new Array(n + 1).fill(0);
   }
 
-  matrix[0].forEach((el, ind) => {
-    subMatrix[0][ind] = Number(el);
-    if (max < subMatrix[0][ind]) max = subMatrix[0][ind];
-  });
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
 
-  for (let i = 1; i < rows; i++) {
-    subMatrix[i][0] = Number(matrix[i][0]);
-    if (max < subMatrix[i][0]) max = subMatrix[i][0];
-  }
-
-  for (let i = 1; i < rows; i++) {
-    for (let j = 1; j < cols; j++) {
-      if (matrix[i][j] === '1') {
-        subMatrix[i][j] = Math.min(subMatrix[i][j - 1], subMatrix[i - 1][j], subMatrix[i - 1][j - 1]) + 1;
-        if (max < subMatrix[i][j]) {
-          max = subMatrix[i][j];
-        }
-      };
+      if (text1.charAt(i - 1) === text2.charAt(j - 1)) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
     }
   }
 
-  return max ** 2;
+  return dp[m][n];
 };
-
-/* console.log(maximalSquare([
-  ['1', '0', '1', '0', '0'],
-  ['1', '0', '1', '1', '1'],
-  ['1', '1', '1', '1', '1'],
-  ['1', '0', '0', '1', '0']
-]));
- */
-//console.log(maximalSquare(['1']));
-
-//
-
-console.log(maximalSquare([
-  ["0", "0", "0", "0", "0"],
-  ["0", "0", "0", "0", "0"],
-  ["0", "0", "0", "0", "1"],
-  ["0", "0", "0", "0", "0"]
-]));

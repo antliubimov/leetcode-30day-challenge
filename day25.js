@@ -1,64 +1,43 @@
 'use strict';
 /*
-Longest Common Subsequence
-Solution
-Given two strings text1 and text2, return the length of their longest common subsequence.
+Jump Game
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
-A subsequence of a string is a new string generated from the original string with some characters(can be none) deleted without changing the relative order of the remaining characters. (eg, "ace" is a subsequence of "abcde" while "aec" is not). A common subsequence of two strings is a subsequence that is common to both strings.
+Each element in the array represents your maximum jump length at that position.
 
-If there is no common subsequence, return 0.
-
+Determine if you are able to reach the last index.
 
 Example 1:
-Input: text1 = "abcde", text2 = "ace"
-Output: 3
-Explanation: The longest common subsequence is "ace" and its length is 3.
+
+Input: [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
 
 Example 2:
-Input: text1 = "abc", text2 = "abc"
-Output: 3
-Explanation: The longest common subsequence is "abc" and its length is 3.
 
-Example 3:
-Input: text1 = "abc", text2 = "def"
-Output: 0
-Explanation: There is no such common subsequence, so the result is 0.
-
-Constraints:
-
-1 <= text1.length <= 1000
-1 <= text2.length <= 1000
-The input strings consist of lowercase English characters only.
-   Hide Hint #1
-Try dynamic programming. DP[i][j] represents the longest common subsequence of text1[0 ... i] & text2[0 ... j].
-   Hide Hint #2
-DP[i][j] = DP[i - 1][j - 1] + 1 , if text1[i] == text2[j] DP[i][j] = max(DP[i - 1][j], DP[i][j - 1]) , otherwise
+Input: [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
 */
 
 /**
- * @param {string} text1
- * @param {string} text2
- * @return {number}
+ * @param {number[]} nums
+ * @return {boolean}
  */
-var longestCommonSubsequence = function (text1, text2) {
-  const dp = [];
-  let m = text1.length;
-  let n = text2.length;
 
-  for (let i = 0; i <= m; i++) {
-    dp[i] = new Array(n + 1).fill(0);
-  }
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-
-      if (text1.charAt(i - 1) === text2.charAt(j - 1)) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
+var canJump = function (nums) {
+  let maxJump = 0;
+  for (let i = 0, length = nums.length; i < length; i++) {
+    if (maxJump < i) {
+      return false;
+    };
+    if (i + nums[i] >= nums.length - 1) {
+      return true;
     }
+    maxJump = Math.max(maxJump, i + nums[i]);
   }
-
-  return dp[m][n];
 };
+
+//console.log(canJump([2, 3, 1, 1, 4])); // true
+//console.log(canJump([3, 2, 1, 0, 4])); // fdlse
+console.log(canJump([3, 0, 8, 2, 0, 0, 1])); // true
