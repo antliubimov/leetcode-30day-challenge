@@ -68,6 +68,7 @@ Constraints:
 1 <= nums[i] <= 10^8
 1 <= value <= 10^8
 At most 50000 calls will be made to showFirstUnique and add.
+
    Hide Hint #1
 Use doubly Linked list with hashmap of pointers to linked list nodes. add unique number to the linked list. When add is called check if the added number is unique then it have to be added to the linked list and if it is repeated remove it from the linked list if exists. When showFirstUnique is called retrieve the head of the linked list.
    Hide Hint #2
@@ -81,7 +82,10 @@ JavaScript
  * @param {number[]} nums
  */
 var FirstUnique = function (nums) {
-
+  this._nums = nums;
+  this.map = new Map();
+  this.unique = [];
+  this._nums.forEach(num => this.add(num));
 };
 
 /**
@@ -89,15 +93,24 @@ var FirstUnique = function (nums) {
  */
 
 FirstUnique.prototype.showFirstUnique = function () {
-
+  return (this.unique.length !== 0) ? this.unique[0] : -1;
 };​
+
 /**
  * @param {number} value
  * @return {void}
  */
 
 FirstUnique.prototype.add = function (value) {
-
+  if (this.map.has(value)) {
+    this.map.set(value, this.map.get(value) + 1);
+    if (this.unique.includes(value)) {
+      this.unique.splice(this.unique.indexOf(value), 1);
+    }
+  } else {
+    this.map.set(value, 1);
+    this.unique.push(value);
+  }
 };​
 /**
  * Your FirstUnique object will be instantiated and called as such:
@@ -105,3 +118,12 @@ FirstUnique.prototype.add = function (value) {
  * var param_1 = obj.showFirstUnique()
  * obj.add(value)
  */
+
+let firstUnique = new FirstUnique([2, 3, 5]);
+firstUnique.showFirstUnique(); // return 2
+firstUnique.add(5); // the queue is now [2,3,5,5]
+firstUnique.showFirstUnique(); // return 2
+firstUnique.add(2); // the queue is now [2,3,5,5,2]
+firstUnique.showFirstUnique(); // return 3
+firstUnique.add(3); // the queue is now [2,3,5,5,2,3]
+firstUnique.showFirstUnique(); // return -1
